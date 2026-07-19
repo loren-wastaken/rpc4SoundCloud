@@ -5,9 +5,7 @@ Shows what you're listening to on SoundCloud as a Discord Rich Presence
 Spotify integration works — except SoundCloud has no such integration, so
 we build our own pipeline.
 
-## Images
-
-![image](image1.png "exampleimage1")
+![example](image1.png)
 
 ## Why three pieces?
 
@@ -36,6 +34,14 @@ npm start
 ```
 Leave this running in a terminal whenever you want the presence to work.
 
+**Optional — auto-start on login (Windows):** instead of manually running `npm start` every time, you can have the relay start silently in the background whenever you log in:
+1. Make sure you've run `npm install` in `relay-server/` at least once.
+2. Press `Win + R`, type `shell:startup`, press Enter — this opens your Startup folder.
+3. Right-click inside it → **New → Shortcut**, and point it at `relay-server/start-relay.vbs`.
+4. From now on, the relay starts automatically on login with no visible console window.
+
+To confirm it's running, check Task Manager for a `node.exe` process. Since it runs silently, if it ever crashes there's no visible error — that's the tradeoff for not having a terminal window open all the time.
+
 ### 2. Browser extension
 - Chrome/Edge: go to `chrome://extensions`, enable Developer Mode, "Load unpacked", select the `extension/` folder.
 - Firefox: go to `about:debugging#/runtime/this-firefox`, "Load Temporary Add-on", select `extension/manifest.json`.
@@ -46,6 +52,8 @@ Leave this running in a terminal whenever you want the presence to work.
 - Rebuild Vencord (`pnpm build`, or whatever your dev setup uses) and restart Discord.
 - Enable "rpc4SoundCloud" under Settings → Vencord → Plugins.
 - Optional: create an application at the [Discord Developer Portal](https://discord.com/developers/applications) and paste its ID into the plugin's "App ID" setting — this changes what name/icon shows next to the activity type badge.
+
+**Heads up:** this repo's `vencord-plugin/index.tsx` is a reference copy. Your actual *working* copy lives inside your local Vencord source clone at `Vencord/src/userplugins/rpc4SoundCloud/index.tsx`, which is a separate file. If you make changes to the plugin, remember to update both, or they'll drift apart.
 
 Make sure **Settings → Activity Privacy → Display current activity as a status message** is on, or nobody (including you) will see it.
 
