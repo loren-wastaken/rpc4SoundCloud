@@ -5,6 +5,10 @@ Shows what you're listening to on SoundCloud as a Discord Rich Presence
 Spotify integration works — except SoundCloud has no such integration, so
 we build our own pipeline.
 
+## Images
+
+[image1](image1.png)
+
 ## Why three pieces?
 
 | Piece | Runs where | Job |
