@@ -7,7 +7,7 @@ we build our own pipeline.
 
 ## Images
 
-[image1](image1.png)
+![image](image1.png "exampleimage1")
 
 ## Why three pieces?
 
