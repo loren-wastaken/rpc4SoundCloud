@@ -1,0 +1,12 @@
+{
+  "name": "rpc4soundcloud-relay",
+  "version": "1.0.0",
+  "description": "Tiny local WebSocket relay that forwards SoundCloud now-playing data from the browser extension to the Vencord plugin.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
