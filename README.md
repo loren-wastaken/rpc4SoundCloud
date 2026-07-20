@@ -51,7 +51,7 @@ To confirm it's running, check Task Manager for a `node.exe` process. Since it r
 - Copy `vencord-plugin/` into your local Vencord source at `src/userplugins/rpc4SoundCloud/` (rename the folder to just `rpc4SoundCloud` if it isn't already).
 - Rebuild Vencord (`pnpm build`, or whatever your dev setup uses) and restart Discord.
 - Enable "rpc4SoundCloud" under Settings → Vencord → Plugins.
-- Optional: create an application at the [Discord Developer Portal](https://discord.com/developers/applications) and paste its ID into the plugin's "App ID" setting — this changes what name/icon shows next to the activity type badge.
+- Optional: create an application at the [Discord Developer Portal](https://discord.com/developers/applications) and paste its ID into the plugin's "App ID" setting — this changes what name/icon shows next to the activity type badge, **and is required if you want real track artwork to show up** (see below).
 
 **Heads up:** this repo's `vencord-plugin/index.tsx` is a reference copy. Your actual *working* copy lives inside your local Vencord source clone at `Vencord/src/userplugins/rpc4SoundCloud/index.tsx`, which is a separate file. If you make changes to the plugin, remember to update both, or they'll drift apart.
 
@@ -66,7 +66,11 @@ Make sure **Settings → Activity Privacy → Display current activity as a stat
 ## Known rough edges / good next steps for learning
 
 - **Reconnect logic** exists on both the extension and the plugin side, but if you close the SoundCloud tab entirely, nothing tells the plugin to clear the presence until its socket errors out — you could send an explicit `beforeunload` message to fix that.
-- **Artwork rendering**: confirmed in testing — the artwork slot currently shows a generic placeholder instead of the actual track art. Discord's docs say external image URLs work directly in `assets.large_image`, but presence-hacking tools often need the `mp:external/<url>` prefix trick to get an external image to render properly. PRs welcome if you figure out the right format.
+- **Artwork now requires an App ID.** Discord doesn't accept a raw image URL in `assets.large_image` — it needs an asset ID resolved against a real, registered Discord Application (the same lookup CustomRPC and arRPC use internally, via `ApplicationAssetUtils.fetchAssetIds`). Without an App ID configured, the plugin skips artwork entirely rather than showing a broken placeholder. To get real cover art:
+  1. Go to the [Discord Developer Portal](https://discord.com/developers/applications) → **New Application** → give it any name (this is just used for the lookup, not shown prominently).
+  2. Copy its **Application ID** from the General Information page.
+  3. Paste it into the plugin's **App ID** setting in Vencord.
+  4. Play a track — artwork should now resolve instead of showing the "?" placeholder.
 - **Multiple tabs**: if you have two SoundCloud tabs open, they'll both connect and stomp on each other's messages through the relay. Tagging messages with a tab ID and having the plugin pick "most recently active" would be a nice upgrade.
 - **Progress bar**: this version only shows elapsed time via `timestamps.start`, not a fixed end time, because SoundCloud doesn't expose track duration through Media Session. You could scrape the visible progress bar's `aria-valuenow`/duration text for that if you want a real "3:12 / 4:05" style bar.
 
